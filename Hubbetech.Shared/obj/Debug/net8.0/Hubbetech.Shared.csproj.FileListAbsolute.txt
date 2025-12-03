@@ -1,0 +1,11 @@
+C:\Users\Admin\OneDrive\Documentos\Projetos Faculdade\Hubbetech\Hubbetech.Shared\bin\Debug\net8.0\Hubbetech.Shared.deps.json
+C:\Users\Admin\OneDrive\Documentos\Projetos Faculdade\Hubbetech\Hubbetech.Shared\bin\Debug\net8.0\Hubbetech.Shared.dll
+C:\Users\Admin\OneDrive\Documentos\Projetos Faculdade\Hubbetech\Hubbetech.Shared\bin\Debug\net8.0\Hubbetech.Shared.pdb
+C:\Users\Admin\OneDrive\Documentos\Projetos Faculdade\Hubbetech\Hubbetech.Shared\obj\Debug\net8.0\Hubbetech.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\OneDrive\Documentos\Projetos Faculdade\Hubbetech\Hubbetech.Shared\obj\Debug\net8.0\Hubbetech.Shared.AssemblyInfoInputs.cache
+C:\Users\Admin\OneDrive\Documentos\Projetos Faculdade\Hubbetech\Hubbetech.Shared\obj\Debug\net8.0\Hubbetech.Shared.AssemblyInfo.cs
+C:\Users\Admin\OneDrive\Documentos\Projetos Faculdade\Hubbetech\Hubbetech.Shared\obj\Debug\net8.0\Hubbetech.Shared.csproj.CoreCompileInputs.cache
+C:\Users\Admin\OneDrive\Documentos\Projetos Faculdade\Hubbetech\Hubbetech.Shared\obj\Debug\net8.0\Hubbetech.Shared.dll
+C:\Users\Admin\OneDrive\Documentos\Projetos Faculdade\Hubbetech\Hubbetech.Shared\obj\Debug\net8.0\refint\Hubbetech.Shared.dll
+C:\Users\Admin\OneDrive\Documentos\Projetos Faculdade\Hubbetech\Hubbetech.Shared\obj\Debug\net8.0\Hubbetech.Shared.pdb
+C:\Users\Admin\OneDrive\Documentos\Projetos Faculdade\Hubbetech\Hubbetech.Shared\obj\Debug\net8.0\ref\Hubbetech.Shared.dll

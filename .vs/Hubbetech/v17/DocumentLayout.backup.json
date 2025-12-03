@@ -1,0 +1,185 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9ACE25E2-5D87-4B1F-8D79-59A616410445}|Hubbetech.Server\\Hubbetech.Server.csproj|c:\\users\\admin\\onedrive\\documentos\\projetos faculdade\\hubbetech\\hubbetech.server\\hubbetech.server.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{9ACE25E2-5D87-4B1F-8D79-59A616410445}|Hubbetech.Server\\Hubbetech.Server.csproj|solutionrelative:hubbetech.server\\hubbetech.server.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00521D6F-9A6E-4475-BB11-CB4B092C16CB}|Hubbetech.Client\\Hubbetech.Client.csproj|c:\\users\\admin\\onedrive\\documentos\\projetos faculdade\\hubbetech\\hubbetech.client\\pages\\dashboardagil.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{00521D6F-9A6E-4475-BB11-CB4B092C16CB}|Hubbetech.Client\\Hubbetech.Client.csproj|solutionrelative:hubbetech.client\\pages\\dashboardagil.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00521D6F-9A6E-4475-BB11-CB4B092C16CB}|Hubbetech.Client\\Hubbetech.Client.csproj|c:\\users\\admin\\onedrive\\documentos\\projetos faculdade\\hubbetech\\hubbetech.client\\layout\\loginlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{00521D6F-9A6E-4475-BB11-CB4B092C16CB}|Hubbetech.Client\\Hubbetech.Client.csproj|solutionrelative:hubbetech.client\\layout\\loginlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00521D6F-9A6E-4475-BB11-CB4B092C16CB}|Hubbetech.Client\\Hubbetech.Client.csproj|c:\\users\\admin\\onedrive\\documentos\\projetos faculdade\\hubbetech\\hubbetech.client\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{00521D6F-9A6E-4475-BB11-CB4B092C16CB}|Hubbetech.Client\\Hubbetech.Client.csproj|solutionrelative:hubbetech.client\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00521D6F-9A6E-4475-BB11-CB4B092C16CB}|Hubbetech.Client\\Hubbetech.Client.csproj|c:\\users\\admin\\onedrive\\documentos\\projetos faculdade\\hubbetech\\hubbetech.client\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{00521D6F-9A6E-4475-BB11-CB4B092C16CB}|Hubbetech.Client\\Hubbetech.Client.csproj|solutionrelative:hubbetech.client\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00521D6F-9A6E-4475-BB11-CB4B092C16CB}|Hubbetech.Client\\Hubbetech.Client.csproj|c:\\users\\admin\\onedrive\\documentos\\projetos faculdade\\hubbetech\\hubbetech.client\\pages\\authentication\\login.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{00521D6F-9A6E-4475-BB11-CB4B092C16CB}|Hubbetech.Client\\Hubbetech.Client.csproj|solutionrelative:hubbetech.client\\pages\\authentication\\login.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00521D6F-9A6E-4475-BB11-CB4B092C16CB}|Hubbetech.Client\\Hubbetech.Client.csproj|c:\\users\\admin\\onedrive\\documentos\\projetos faculdade\\hubbetech\\hubbetech.client\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{00521D6F-9A6E-4475-BB11-CB4B092C16CB}|Hubbetech.Client\\Hubbetech.Client.csproj|solutionrelative:hubbetech.client\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9ACE25E2-5D87-4B1F-8D79-59A616410445}|Hubbetech.Server\\Hubbetech.Server.csproj|c:\\users\\admin\\onedrive\\documentos\\projetos faculdade\\hubbetech\\hubbetech.server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9ACE25E2-5D87-4B1F-8D79-59A616410445}|Hubbetech.Server\\Hubbetech.Server.csproj|solutionrelative:hubbetech.server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00521D6F-9A6E-4475-BB11-CB4B092C16CB}|Hubbetech.Client\\Hubbetech.Client.csproj|c:\\users\\admin\\onedrive\\documentos\\projetos faculdade\\hubbetech\\hubbetech.client\\pages\\linksempresa.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{00521D6F-9A6E-4475-BB11-CB4B092C16CB}|Hubbetech.Client\\Hubbetech.Client.csproj|solutionrelative:hubbetech.client\\pages\\linksempresa.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 10,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:827204284:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1457744203:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "LoginLayout.razor",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Client\\Layout\\LoginLayout.razor",
+              "RelativeDocumentMoniker": "Hubbetech.Client\\Layout\\LoginLayout.razor",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Client\\Layout\\LoginLayout.razor",
+              "RelativeToolTip": "Hubbetech.Client\\Layout\\LoginLayout.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-02T20:02:44.884Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DashboardAgil.razor",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Client\\Pages\\DashboardAgil.razor",
+              "RelativeDocumentMoniker": "Hubbetech.Client\\Pages\\DashboardAgil.razor",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Client\\Pages\\DashboardAgil.razor",
+              "RelativeToolTip": "Hubbetech.Client\\Pages\\DashboardAgil.razor",
+              "ViewState": "AgIAAI8BAAAAAAAAAAAAAKoBAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-02T18:31:11.174Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "index.html",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Client\\wwwroot\\index.html",
+              "RelativeDocumentMoniker": "Hubbetech.Client\\wwwroot\\index.html",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Client\\wwwroot\\index.html",
+              "RelativeToolTip": "Hubbetech.Client\\wwwroot\\index.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-12-02T17:12:30.751Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Client\\Layout\\NavMenu.razor",
+              "RelativeDocumentMoniker": "Hubbetech.Client\\Layout\\NavMenu.razor",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Client\\Layout\\NavMenu.razor",
+              "RelativeToolTip": "Hubbetech.Client\\Layout\\NavMenu.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC8AAABhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-02T16:21:53.317Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "LinksEmpresa.razor",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Client\\Pages\\LinksEmpresa.razor",
+              "RelativeDocumentMoniker": "Hubbetech.Client\\Pages\\LinksEmpresa.razor",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Client\\Pages\\LinksEmpresa.razor",
+              "RelativeToolTip": "Hubbetech.Client\\Pages\\LinksEmpresa.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-02T16:20:32.54Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Login.razor",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Client\\Pages\\Authentication\\Login.razor",
+              "RelativeDocumentMoniker": "Hubbetech.Client\\Pages\\Authentication\\Login.razor",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Client\\Pages\\Authentication\\Login.razor",
+              "RelativeToolTip": "Hubbetech.Client\\Pages\\Authentication\\Login.razor",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAACkAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-02T15:21:06.581Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Home.razor",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Client\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "Hubbetech.Client\\Pages\\Home.razor",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Client\\Pages\\Home.razor",
+              "RelativeToolTip": "Hubbetech.Client\\Pages\\Home.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-02T15:11:41.152Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Hubbetech.Server.csproj",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Server\\Hubbetech.Server.csproj",
+              "RelativeDocumentMoniker": "Hubbetech.Server\\Hubbetech.Server.csproj",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Server\\Hubbetech.Server.csproj",
+              "RelativeToolTip": "Hubbetech.Server\\Hubbetech.Server.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-12-02T13:39:09.196Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Server\\Program.cs",
+              "RelativeDocumentMoniker": "Hubbetech.Server\\Program.cs",
+              "ToolTip": "C:\\Users\\Admin\\OneDrive\\Documentos\\Projetos Faculdade\\Hubbetech\\Hubbetech.Server\\Program.cs",
+              "RelativeToolTip": "Hubbetech.Server\\Program.cs",
+              "ViewState": "AgIAAGoAAAAAAAAAAAD4v30AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-01T05:16:54.608Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

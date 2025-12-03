@@ -1,0 +1,65 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="">Hubbetech</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass nav-scrollable d-flex flex-column" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="dashboard">
+                <i class="bi bi-grid-fill me-2" aria-hidden="true"></i> Dashboard
+            </NavLink>
+        </div>
+        <AuthorizeView Roles="Gestor">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="funcionarios">
+                    <i class="bi bi-people-fill me-2" aria-hidden="true"></i> Funcionários
+                </NavLink>
+            </div>
+        </AuthorizeView>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="equipamentos">
+                <i class="bi bi-pc-display me-2" aria-hidden="true"></i> Equipamentos
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="links">
+                <i class="bi bi-link-45deg me-2" aria-hidden="true"></i> Links da Empresa
+            </NavLink>
+        </div>
+    </nav>
+
+    <div class="mt-auto p-3 border-top border-secondary">
+        <AuthorizeView>
+            <Authorized>
+                <div class="d-flex align-items-center text-white">
+                    <div class="avatar-sm rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-2" style="width: 32px; height: 32px;">
+                        @context.User.Identity?.Name?.Substring(0, 1).ToUpper()
+                    </div>
+                    <div class="overflow-hidden">
+                        <div class="fw-bold text-truncate">@context.User.Identity?.Name</div>
+                        <small class="text-muted d-block">Online</small>
+                    </div>
+                </div>
+                <a href="authentication/logout" class="btn btn-outline-danger btn-sm w-100 mt-3">
+                    <i class="bi bi-box-arrow-right me-2"></i> Sair
+                </a>
+            </Authorized>
+        </AuthorizeView>
+    </div>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

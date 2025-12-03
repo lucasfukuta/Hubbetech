@@ -1,0 +1,205 @@
+@page "/funcionarios"
+@using Hubbetech.Shared.Dtos
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Gestor")]
+@inject HttpClient Http
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-primary">Funcionários</h3>
+            <p class="text-muted">Gerencie todos os funcionários da empresa</p>
+        </div>
+        <button class="btn btn-primary btn-lg shadow-sm" @onclick="() => OpenModal()">
+            <i class="bi bi-plus-lg me-2"></i>Novo Funcionário
+        </button>
+    </div>
+
+    <div class="mb-4">
+        <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+            <input type="text" class="form-control border-start-0 ps-0" placeholder="Buscar funcionários..." @bind="searchTerm" @bind:event="oninput" />
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4 py-3 text-muted small fw-bold text-uppercase">Nome</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase">Email</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase">Departamento</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase">Tipo</th>
+                            <th class="py-3 text-muted small fw-bold text-uppercase">Data de Cadastro</th>
+                            <th class="pe-4 py-3 text-end text-muted small fw-bold text-uppercase">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (filteredUsers == null)
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-5">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Carregando...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var user in filteredUsers)
+                            {
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-sm rounded-circle bg-primary-subtle text-primary d-flex justify-content-center align-items-center me-3" style="width: 40px; height: 40px;">
+                                                <span class="fw-bold">@user.UserName.Substring(0, 1).ToUpper()</span>
+                                            </div>
+                                            <span class="fw-semibold text-dark">@user.UserName</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-muted">@user.Email</td>
+                                    <td class="text-dark">TI</td> <!-- Placeholder for Dept -->
+                                    <td>
+                                        <span class="badge bg-primary-subtle text-primary rounded-pill px-3">Funcionário</span>
+                                    </td>
+                                    <td class="text-muted">19/03/2023</td> <!-- Placeholder for Date -->
+                                    <td class="pe-4 text-end">
+        <div class="dropdown">
+                                            <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li><a class="dropdown-item" href="javascript:void(0)" @onclick="() => OpenModal(user)">Editar</a></li>
+                                                <li><a class="dropdown-item text-danger" href="javascript:void(0)" @onclick="() => DeleteUser(user.Id)">Excluir</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+@if (showModal)
+{
+    <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">@(editingUser.Id == string.Empty ? "Novo Funcionário" : "Editar Funcionário")</h5>
+                    <button type="button" class="btn-close btn-close-white" @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nome de Usuário</label>
+                        <input type="text" class="form-control" @bind="editingUser.UserName" placeholder="Ex: joaosilva" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" @bind="editingUser.Email" placeholder="Ex: joao@hubbetech.com" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Senha @(editingUser.Id != string.Empty ? "(Deixe em branco para manter)" : "")</label>
+                        <input type="password" class="form-control" @bind="editingUser.Password" placeholder="********" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Função</label>
+                        <select class="form-select" @bind="editingUser.Role">
+                            <option value="Funcionario">Funcionário</option>
+                            <option value="Gestor">Gestor</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseModal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" @onclick="SaveUser">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<UserDto>? users;
+    private string searchTerm = "";
+    private bool showModal = false;
+    private UserDto editingUser = new();
+    @inject IJSRuntime JSRuntime
+
+    private IEnumerable<UserDto>? filteredUsers => 
+        users?.Where(u => string.IsNullOrEmpty(searchTerm) || 
+                          u.UserName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) || 
+                          u.Email.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        try
+        {
+            users = await Http.GetFromJsonAsync<List<UserDto>>("api/funcionarios");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao carregar funcionários: {ex.Message}");
+        }
+    }
+
+    private void OpenModal(UserDto? user = null)
+    {
+        if (user != null)
+        {
+            editingUser = new UserDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Role = user.Role
+            };
+        }
+        else
+        {
+            editingUser = new UserDto { Id = string.Empty, Role = "Funcionario" };
+        }
+        showModal = true;
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+
+    private async Task SaveUser()
+    {
+        if (string.IsNullOrEmpty(editingUser.Id))
+        {
+            await Http.PostAsJsonAsync("api/funcionarios", editingUser);
+        }
+        else
+        {
+            await Http.PutAsJsonAsync($"api/funcionarios/{editingUser.Id}", editingUser);
+        }
+        showModal = false;
+        await LoadData();
+    }
+
+    private async Task DeleteUser(string id)
+    {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Tem certeza que deseja excluir este funcionário?"))
+        {
+            await Http.DeleteAsync($"api/funcionarios/{id}");
+            await LoadData();
+        }
+    }
+}

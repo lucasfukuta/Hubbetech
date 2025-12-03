@@ -1,0 +1,472 @@
+@page "/dashboard"
+@using Hubbetech.Shared.Dtos
+@using Hubbetech.Shared.Enums
+@using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
+@attribute [Authorize]
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<div class="container-fluid">
+    <div class="mb-4">
+        <h3 class="fw-bold text-dark">Olá, @userName! </h3>
+        <p class="text-muted">Visão geral de todas as atividades da equipe</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 stats-card">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1 small fw-bold text-uppercase">Total de Tarefas</p>
+                        <h2 class="fw-bold mb-0">@demandas?.Count</h2>
+                        <small class="text-success fw-bold">+12% vs mês anterior</small>
+                    </div>
+                    <div class="icon-box bg-primary-subtle text-primary rounded-3 p-3">
+                        <i class="bi bi-check2-circle fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 stats-card">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1 small fw-bold text-uppercase">Em Progresso</p>
+                        <h2 class="fw-bold mb-0">@demandas?.Count(d => d.Status == StatusDemanda.Fazendo)</h2>
+                        <small class="text-muted">33% vs mês anterior</small>
+                    </div>
+                    <div class="icon-box bg-warning-subtle text-warning rounded-3 p-3">
+                        <i class="bi bi-clock fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 stats-card">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1 small fw-bold text-uppercase">Atrasadas</p>
+                        <h2 class="fw-bold mb-0">3</h2>
+                        <small class="text-danger fw-bold">-2 vs mês anterior</small>
+                    </div>
+                    <div class="icon-box bg-danger-subtle text-danger rounded-3 p-3">
+                        <i class="bi bi-exclamation-triangle fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 stats-card">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1 small fw-bold text-uppercase">Funcionários Ativos</p>
+                        <h2 class="fw-bold mb-0">12</h2>
+                        <small class="text-success fw-bold">+2 vs mês anterior</small>
+                    </div>
+                    <div class="icon-box bg-success-subtle text-success rounded-3 p-3">
+                        <i class="bi bi-people fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="fw-bold text-dark mb-4">Quadro de Tarefas</h4>
+
+    @if (demandas == null)
+    {
+        <div class="d-flex justify-content-center align-items-center" style="height: 30vh;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            <!-- A Fazer -->
+            <div class="col-md-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex align-items-center">
+                        <span class="dot bg-secondary me-2"></span>
+                        <h6 class="fw-bold mb-0">A Fazer</h6>
+                        <span class="text-muted ms-2 small">@demandas.Count(d => d.Status == StatusDemanda.AFazer)</span>
+                    </div>
+                    <button class="btn btn-sm btn-link text-muted" @onclick="() => OpenModal(new DemandaDto { Status = StatusDemanda.AFazer })"><i class="bi bi-plus-lg"></i></button>
+                </div>
+                <div class="kanban-column h-100" 
+                     @ondragover:preventDefault 
+                     @ondrop="() => HandleDrop(StatusDemanda.AFazer)">
+                    @foreach (var item in demandas.Where(d => d.Status == StatusDemanda.AFazer))
+                    {
+                        <div class="card border-0 shadow-sm mb-3 kanban-card" 
+                             draggable="true" 
+                             @ondragstart="() => HandleDragStart(item)">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <i class="bi bi-grid-3x3-gap-fill text-muted opacity-25"></i>
+                                    <span class="badge bg-danger-subtle text-danger rounded-pill px-2 small">Alta</span>
+                                </div>
+                                <h6 class="card-title fw-bold mb-2">@item.Title</h6>
+                                <p class="text-muted small mb-3 text-truncate">@item.Description</p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <div class="d-flex align-items-center">
+                                         <div class="avatar-xs rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center me-2" style="width: 24px; height: 24px; font-size: 0.7rem;">
+                                            <i class="bi bi-person"></i>
+                                        </div>
+                                        <small class="text-muted" style="font-size: 0.75rem;">Ana Santos</small>
+                                    </div>
+                                    <small class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar me-1"></i> 09/12</small>
+                                </div>
+                                <div class="mt-2 text-end">
+                                     <div class="dropdown d-inline-block">
+                                        <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="javascript:void(0)" @onclick="() => OpenModal(item)">Editar</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0)" @onclick="() => MoveDemanda(item, StatusDemanda.Fazendo)">Mover para Em Progresso</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="javascript:void(0)" @onclick="() => DeleteDemanda(item.Id)">Excluir</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Em Progresso -->
+            <div class="col-md-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex align-items-center">
+                        <span class="dot bg-warning me-2"></span>
+                        <h6 class="fw-bold mb-0">Em Progresso</h6>
+                        <span class="text-muted ms-2 small">@demandas.Count(d => d.Status == StatusDemanda.Fazendo)</span>
+                    </div>
+                    <button class="btn btn-sm btn-link text-muted" @onclick="() => OpenModal(new DemandaDto { Status = StatusDemanda.Fazendo })"><i class="bi bi-plus-lg"></i></button>
+                </div>
+                <div class="kanban-column h-100" 
+                     @ondragover:preventDefault 
+                     @ondrop="() => HandleDrop(StatusDemanda.Fazendo)">
+                    @foreach (var item in demandas.Where(d => d.Status == StatusDemanda.Fazendo))
+                    {
+                        <div class="card border-0 shadow-sm mb-3 kanban-card" 
+                             draggable="true" 
+                             @ondragstart="() => HandleDragStart(item)">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <i class="bi bi-grid-3x3-gap-fill text-muted opacity-25"></i>
+                                    <span class="badge bg-warning-subtle text-warning rounded-pill px-2 small">Média</span>
+                                </div>
+                                <h6 class="card-title fw-bold mb-2">@item.Title</h6>
+                                <p class="text-muted small mb-3 text-truncate">@item.Description</p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <div class="d-flex align-items-center">
+                                         <div class="avatar-xs rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center me-2" style="width: 24px; height: 24px; font-size: 0.7rem;">
+                                            <i class="bi bi-person"></i>
+                                        </div>
+                                        <small class="text-muted" style="font-size: 0.75rem;">Carlos Silva</small>
+                                    </div>
+                                    <small class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar me-1"></i> 04/12</small>
+                                </div>
+                                <div class="mt-2 text-end">
+                                     <div class="dropdown d-inline-block">
+                                        <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="javascript:void(0)" @onclick="() => OpenModal(item)">Editar</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0)" @onclick="() => MoveDemanda(item, StatusDemanda.EmRevisao)">Mover para Em Revisão</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0)" @onclick="() => MoveDemanda(item, StatusDemanda.AFazer)">Voltar para A Fazer</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="javascript:void(0)" @onclick="() => DeleteDemanda(item.Id)">Excluir</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Em Revisão -->
+            <div class="col-md-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex align-items-center">
+                        <span class="dot bg-info me-2"></span>
+                        <h6 class="fw-bold mb-0">Em Revisão</h6>
+                        <span class="text-muted ms-2 small">@demandas.Count(d => d.Status == StatusDemanda.EmRevisao)</span>
+                    </div>
+                    <button class="btn btn-sm btn-link text-muted" @onclick="() => OpenModal(new DemandaDto { Status = StatusDemanda.EmRevisao })"><i class="bi bi-plus-lg"></i></button>
+                </div>
+                <div class="kanban-column h-100" 
+                     @ondragover:preventDefault 
+                     @ondrop="() => HandleDrop(StatusDemanda.EmRevisao)">
+                    @foreach (var item in demandas.Where(d => d.Status == StatusDemanda.EmRevisao))
+                    {
+                        <div class="card border-0 shadow-sm mb-3 kanban-card" 
+                             draggable="true" 
+                             @ondragstart="() => HandleDragStart(item)">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <i class="bi bi-grid-3x3-gap-fill text-muted opacity-25"></i>
+                                    <span class="badge bg-info-subtle text-info rounded-pill px-2 small">Baixa</span>
+                                </div>
+                                <h6 class="card-title fw-bold mb-2">@item.Title</h6>
+                                <p class="text-muted small mb-3 text-truncate">@item.Description</p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <div class="d-flex align-items-center">
+                                         <div class="avatar-xs rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center me-2" style="width: 24px; height: 24px; font-size: 0.7rem;">
+                                            <i class="bi bi-person"></i>
+                                        </div>
+                                        <small class="text-muted" style="font-size: 0.75rem;">Ana Santos</small>
+                                    </div>
+                                    <small class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar me-1"></i> 05/12</small>
+                                </div>
+                                <div class="mt-2 text-end">
+                                     <div class="dropdown d-inline-block">
+                                        <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="javascript:void(0)" @onclick="() => OpenModal(item)">Editar</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0)" @onclick="() => MoveDemanda(item, StatusDemanda.Feito)">Mover para Concluído</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0)" @onclick="() => MoveDemanda(item, StatusDemanda.Fazendo)">Voltar para Em Progresso</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="javascript:void(0)" @onclick="() => DeleteDemanda(item.Id)">Excluir</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Concluído -->
+            <div class="col-md-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex align-items-center">
+                        <span class="dot bg-success me-2"></span>
+                        <h6 class="fw-bold mb-0">Concluído</h6>
+                        <span class="text-muted ms-2 small">@demandas.Count(d => d.Status == StatusDemanda.Feito)</span>
+                    </div>
+                    <button class="btn btn-sm btn-link text-muted" @onclick="() => OpenModal(new DemandaDto { Status = StatusDemanda.Feito })"><i class="bi bi-plus-lg"></i></button>
+                </div>
+                <div class="kanban-column h-100" 
+                     @ondragover:preventDefault 
+                     @ondrop="() => HandleDrop(StatusDemanda.Feito)">
+                    @foreach (var item in demandas.Where(d => d.Status == StatusDemanda.Feito))
+                    {
+                        <div class="card border-0 shadow-sm mb-3 kanban-card" 
+                             draggable="true" 
+                             @ondragstart="() => HandleDragStart(item)">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <i class="bi bi-grid-3x3-gap-fill text-muted opacity-25"></i>
+                                    <span class="badge bg-danger-subtle text-danger rounded-pill px-2 small">Alta</span>
+                                </div>
+                                <h6 class="card-title fw-bold mb-2 text-decoration-line-through text-muted">@item.Title</h6>
+                                <p class="text-muted small mb-3 text-truncate">@item.Description</p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <div class="d-flex align-items-center">
+                                         <div class="avatar-xs rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center me-2" style="width: 24px; height: 24px; font-size: 0.7rem;">
+                                            <i class="bi bi-person"></i>
+                                        </div>
+                                        <small class="text-muted" style="font-size: 0.75rem;">Carlos Silva</small>
+                                    </div>
+                                    <small class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-check2-all me-1"></i> Feito</small>
+                                </div>
+                                <div class="mt-2 text-end">
+                                     <div class="dropdown d-inline-block">
+                                        <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="javascript:void(0)" @onclick="() => OpenModal(item)">Editar</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0)" @onclick="() => MoveDemanda(item, StatusDemanda.EmRevisao)">Voltar para Em Revisão</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="javascript:void(0)" @onclick="() => DeleteDemanda(item.Id)">Excluir</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Modal -->
+@if (showModal)
+{
+    <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">@(editingDemanda.Id == 0 ? "Nova Tarefa" : "Editar Tarefa")</h5>
+                    <button type="button" class="btn-close btn-close-white" @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Título</label>
+                        <input type="text" class="form-control" @bind="editingDemanda.Title" placeholder="Ex: Preparar relatório mensal" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Descrição</label>
+                        <textarea class="form-control" @bind="editingDemanda.Description" rows="3" placeholder="Detalhes da tarefa..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" @bind="editingDemanda.Status">
+                            <option value="@StatusDemanda.AFazer">A Fazer</option>
+                            <option value="@StatusDemanda.Fazendo">Em Progresso</option>
+                            <option value="@StatusDemanda.EmRevisao">Em Revisão</option>
+                            <option value="@StatusDemanda.Feito">Concluído</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseModal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" @onclick="SaveDemanda">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    .kanban-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: grab;
+        border-radius: 12px;
+    }
+    .kanban-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    }
+    .stats-card {
+        border-radius: 12px;
+    }
+    .icon-box {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+@code {
+    private List<DemandaDto>? demandas;
+    private bool showModal = false;
+    private DemandaDto editingDemanda = new();
+    private string userName = "Usuário";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity?.IsAuthenticated ?? false)
+        {
+            userName = user.Identity.Name ?? "Usuário";
+        }
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        try
+        {
+            demandas = await Http.GetFromJsonAsync<List<DemandaDto>>("api/demandas");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro: {ex.Message}");
+        }
+    }
+
+    private void OpenModal(DemandaDto? demanda = null)
+    {
+        if (demanda != null)
+        {
+            editingDemanda = new DemandaDto
+            {
+                Id = demanda.Id,
+                Title = demanda.Title,
+                Description = demanda.Description,
+                Status = demanda.Status,
+                AssignedToUserId = demanda.AssignedToUserId
+            };
+        }
+        else
+        {
+            editingDemanda = new DemandaDto { Status = StatusDemanda.AFazer };
+        }
+        showModal = true;
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+
+    private async Task SaveDemanda()
+    {
+        if (editingDemanda.Id == 0)
+        {
+            await Http.PostAsJsonAsync("api/demandas", editingDemanda);
+        }
+        else
+        {
+            await Http.PutAsJsonAsync($"api/demandas/{editingDemanda.Id}", editingDemanda);
+        }
+        showModal = false;
+        await LoadData();
+    }
+
+    private async Task DeleteDemanda(int id)
+    {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Tem certeza que deseja excluir?"))
+        {
+            await Http.DeleteAsync($"api/demandas/{id}");
+            await LoadData();
+        }
+    }
+
+    private DemandaDto? draggedDemanda;
+
+    private void HandleDragStart(DemandaDto demanda)
+    {
+        draggedDemanda = demanda;
+    }
+
+    private async Task HandleDrop(StatusDemanda newStatus)
+    {
+        if (draggedDemanda != null && draggedDemanda.Status != newStatus)
+        {
+            await MoveDemanda(draggedDemanda, newStatus);
+            draggedDemanda = null;
+        }
+    }
+
+    private async Task MoveDemanda(DemandaDto demanda, StatusDemanda newStatus)
+    {
+        demanda.Status = newStatus;
+        await Http.PutAsJsonAsync($"api/demandas/{demanda.Id}", demanda);
+        await LoadData();
+    }
+}

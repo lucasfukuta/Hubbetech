@@ -1,0 +1,92 @@
+@page "/authentication/login"
+@layout Hubbetech.Client.Layout.LoginLayout
+@using Hubbetech.Shared.Auth
+@using Hubbetech.Client.Services
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<div class="login-container d-flex align-items-center justify-content-center min-vh-100 bg-light">
+    <div class="card border-0 shadow-lg" style="width: 400px; border-radius: 1rem;">
+        <div class="card-body p-5">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold text-primary">Hubbetech</h2>
+                <p class="text-muted">Bem-vindo de volta! Faça login para continuar.</p>
+            </div>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @errorMessage
+                </div>
+            }
+
+            <EditForm Model="loginRequest" OnValidSubmit="HandleLogin">
+                <DataAnnotationsValidator />
+                
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Email</label>
+                    <InputText @bind-Value="loginRequest.Email" class="form-control form-control-lg" placeholder="seu@email.com" />
+                    <ValidationMessage For="@(() => loginRequest.Email)" />
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Senha</label>
+                    <div style="position: relative;">
+                        <InputText @bind-Value="loginRequest.Password" type="@passwordType" class="form-control form-control-lg pe-5" placeholder="********" />
+                        <button type="button" class="btn border-0 bg-transparent position-absolute top-50 end-0 translate-middle-y" style="right: 10px; z-index: 10; color: #6c757d;" @onclick="TogglePasswordVisibility">
+                            <i class="bi @(showPassword ? "bi-eye-slash" : "bi-eye") fs-5"></i>
+                        </button>
+                    </div>
+                    <ValidationMessage For="@(() => loginRequest.Password)" />
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg fw-bold shadow-sm">Entrar</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+<style>
+    .login-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+</style>
+
+@code {
+    private LoginRequest loginRequest = new();
+    private string? errorMessage;
+    private bool showPassword = false;
+    private string passwordType => showPassword ? "text" : "password";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (authState.User.Identity?.IsAuthenticated == true)
+        {
+            NavigationManager.NavigateTo("/dashboard");
+        }
+    }
+
+    private void TogglePasswordVisibility()
+    {
+        showPassword = !showPassword;
+    }
+
+    private async Task HandleLogin()
+    {
+        errorMessage = null;
+        var result = await AuthService.Login(loginRequest);
+
+        if (result.Successful)
+        {
+            NavigationManager.NavigateTo("/dashboard");
+        }
+        else
+        {
+            errorMessage = result.Error ?? "Falha no login. Verifique suas credenciais.";
+        }
+    }
+}

@@ -1,0 +1,200 @@
+@page "/equipamentos"
+@using Hubbetech.Shared.Dtos
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-primary">Equipamentos</h3>
+            <p class="text-muted">Controle de equipamentos da empresa</p>
+        </div>
+        <button class="btn btn-primary btn-lg shadow-sm" @onclick="() => OpenModal()">
+            <i class="bi bi-plus-lg me-2"></i>Novo Equipamento
+        </button>
+    </div>
+
+    <div class="mb-4">
+        <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+            <input type="text" class="form-control border-start-0 ps-0" placeholder="Buscar equipamentos..." @bind="searchTerm" @bind:event="oninput" />
+        </div>
+    </div>
+
+    @if (filteredEquipamentos == null)
+    {
+        <div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var item in filteredEquipamentos)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-shadow transition-all">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="icon-box bg-light text-primary rounded-3 p-3">
+                                    <i class="bi bi-laptop fs-4"></i>
+                                </div>
+                                <span class="badge @GetStatusBadgeClass(item.Status)">@item.Status</span>
+                            </div>
+                            <h5 class="card-title fw-bold mb-1">@item.Name</h5>
+                            <p class="text-muted small mb-3">@item.SerialNumber</p>
+                            
+                            <hr class="my-3 text-muted opacity-25" />
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center me-2" style="width: 32px; height: 32px; font-size: 0.8rem;">
+                                        <i class="bi bi-person"></i>
+                                    </div>
+                                    <small class="text-muted">Responsável</small>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-three-dots"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="javascript:void(0)" @onclick="() => OpenModal(item)">Editar</a></li>
+                                        <li><a class="dropdown-item text-danger" href="javascript:void(0)" @onclick="() => DeleteEquipamento(item.Id)">Excluir</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<!-- Modal -->
+@if (showModal)
+{
+    <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">@(editingEquipamento.Id == 0 ? "Novo Equipamento" : "Editar Equipamento")</h5>
+                    <button type="button" class="btn-close btn-close-white" @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nome do Equipamento</label>
+                        <input type="text" class="form-control" @bind="editingEquipamento.Name" placeholder="Ex: MacBook Pro 14" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Número de Série</label>
+                        <input type="text" class="form-control" @bind="editingEquipamento.SerialNumber" placeholder="Ex: MBP-2024-001" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" @bind="editingEquipamento.Status">
+                            <option value="Disponível">Disponível</option>
+                            <option value="Em Uso">Em Uso</option>
+                            <option value="Manutenção">Manutenção</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseModal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" @onclick="SaveEquipamento">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<EquipamentoDto>? equipamentos;
+    private string searchTerm = "";
+    private bool showModal = false;
+    private EquipamentoDto editingEquipamento = new();
+
+    private IEnumerable<EquipamentoDto>? filteredEquipamentos => 
+        equipamentos?.Where(e => string.IsNullOrEmpty(searchTerm) || 
+                                 e.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) || 
+                                 e.SerialNumber.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        try
+        {
+            equipamentos = await Http.GetFromJsonAsync<List<EquipamentoDto>>("api/equipamentos");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro: {ex.Message}");
+        }
+    }
+
+    private string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Disponível" => "bg-success-subtle text-success",
+            "Em Uso" => "bg-warning-subtle text-warning",
+            "Manutenção" => "bg-info-subtle text-info",
+            _ => "bg-secondary-subtle text-secondary"
+        };
+    }
+
+    private void OpenModal(EquipamentoDto? equipamento = null)
+    {
+        if (equipamento != null)
+        {
+            editingEquipamento = new EquipamentoDto
+            {
+                Id = equipamento.Id,
+                Name = equipamento.Name,
+                SerialNumber = equipamento.SerialNumber,
+                Status = equipamento.Status
+            };
+        }
+        else
+        {
+            editingEquipamento = new EquipamentoDto { Status = "Disponível" };
+        }
+        showModal = true;
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+
+    private async Task SaveEquipamento()
+    {
+        if (editingEquipamento.Id == 0)
+        {
+            await Http.PostAsJsonAsync("api/equipamentos", editingEquipamento);
+        }
+        else
+        {
+            await Http.PutAsJsonAsync($"api/equipamentos/{editingEquipamento.Id}", editingEquipamento);
+        }
+        showModal = false;
+        await LoadData();
+    }
+
+    private async Task DeleteEquipamento(int id)
+    {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Tem certeza que deseja excluir?"))
+        {
+            await Http.DeleteAsync($"api/equipamentos/{id}");
+            await LoadData();
+        }
+    }
+}

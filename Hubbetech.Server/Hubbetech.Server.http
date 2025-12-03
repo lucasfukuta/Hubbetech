@@ -1,0 +1,6 @@
+@Hubbetech.Server_HostAddress = http://localhost:5189
+
+GET {{Hubbetech.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
