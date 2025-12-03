@@ -1,7 +1,3 @@
-Aqui está uma proposta de documentação (README.md) para o projeto **Hubbetech**, baseada nos arquivos que você forneceu.
-
------
-
 # Hubbetech
 
 O **Hubbetech** é um sistema de gestão corporativa desenvolvido utilizando a arquitetura **Blazor WebAssembly Hosted** com .NET 8. O projeto visa facilitar o gerenciamento de demandas, equipamentos, funcionários e links úteis da empresa, integrando um frontend interativo com uma API robusta.
